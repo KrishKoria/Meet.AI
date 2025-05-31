@@ -14,7 +14,7 @@ export default async function AgentsPage() {
   });
   if (!session) redirect("/sign-in");
   const client = getQueryClient();
-  void client.prefetchQuery(trpc.agents.getMany.queryOptions());
+  void client.prefetchQuery(trpc.agents.getMany.queryOptions({}));
   return (
     <>
       <AgentsListHeader />
