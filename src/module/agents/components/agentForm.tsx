@@ -1,6 +1,5 @@
 import { useTRPC } from "@/trpc/client";
 import { AgentGetOne } from "../types";
-import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { agentsInsertSchema } from "../schemas";
@@ -18,7 +17,6 @@ import { GenerateAvatar } from "@/components/generate-avatar";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { on } from "events";
 import { toast } from "sonner";
 
 interface AgentFormProps {
