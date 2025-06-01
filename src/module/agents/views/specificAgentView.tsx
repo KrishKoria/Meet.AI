@@ -12,6 +12,8 @@ import { VideoIcon } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import useConfirm from "@/hooks/use-confirm";
+import { useState } from "react";
+import UpdateAgentDialog from "../components/update-agent-dialog";
 
 interface SpecificAgentViewProps {
   agentId: string;
@@ -21,6 +23,7 @@ function SpecificAgentView({ agentId }: SpecificAgentViewProps) {
   const router = useRouter();
   const client = useQueryClient();
   const trpc = useTRPC();
+  const [updateAgentDialogOpen, setUpdateAgentDialogOpen] = useState(false);
   const { data } = useSuspenseQuery(
     trpc.agents.getOne.queryOptions({ id: agentId })
   );
@@ -28,7 +31,7 @@ function SpecificAgentView({ agentId }: SpecificAgentViewProps) {
     trpc.agents.remove.mutationOptions({
       onSuccess: async () => {
         await client.invalidateQueries(trpc.agents.getMany.queryOptions({}));
-        // client.invalidateQueries(trpc.agents.getMany.queryOptions({}));
+        // client.invalidateQueries(trpc.meetings.getMany.queryOptions({}));
         router.push("/agents");
       },
       onError: (error) => {
@@ -48,11 +51,16 @@ function SpecificAgentView({ agentId }: SpecificAgentViewProps) {
   return (
     <>
       <RemoveConfirmation />
+      <UpdateAgentDialog
+        open={updateAgentDialogOpen}
+        onOpenChange={setUpdateAgentDialogOpen}
+        initialValues={data}
+      />
       <div className="flex-1 py-4 px-4 md:px-8 flex flex-col gap-y-4">
         <SpecificAgentViewHeader
           agentId={agentId}
           agentName={data.name}
-          onEdit={() => {}}
+          onEdit={() => setUpdateAgentDialogOpen(true)}
           onRemove={() => handleRemove()}
         />
         <div className="bg-white rounded-lg border">

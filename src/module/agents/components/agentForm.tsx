@@ -34,6 +34,17 @@ function AgentForm({ onSuccess, onCancel, initialValues }: AgentFormProps) {
     trpc.agents.create.mutationOptions({
       onSuccess: async () => {
         await client.invalidateQueries(trpc.agents.getMany.queryOptions({}));
+        onSuccess?.();
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    })
+  );
+  const updateAgent = useMutation(
+    trpc.agents.update.mutationOptions({
+      onSuccess: async () => {
+        await client.invalidateQueries(trpc.agents.getMany.queryOptions({}));
         if (initialValues?.id) {
           await client.invalidateQueries(
             trpc.agents.getOne.queryOptions({ id: initialValues.id })
@@ -55,12 +66,14 @@ function AgentForm({ onSuccess, onCancel, initialValues }: AgentFormProps) {
     },
   });
   const isEdit = !!initialValues?.id;
-  const isPending = createAgent.isPending;
+  const isPending = createAgent.isPending || updateAgent.isPending;
 
   const onSubmit = (data: z.infer<typeof agentsInsertSchema>) => {
     if (isEdit) {
-      // Handle edit logic here if needed
-      console.warn("Edit functionality not implemented yet.");
+      updateAgent.mutate({
+        id: initialValues.id,
+        ...data,
+      });
     } else {
       createAgent.mutate(data);
     }
