@@ -5,7 +5,19 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { ChevronRightIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  ChevronRightIcon,
+  MoreVerticalIcon,
+  PencilIcon,
+  TrashIcon,
+} from "lucide-react";
 import Link from "next/link";
 
 interface SpecificAgentViewHeaderProps {
@@ -43,6 +55,24 @@ function SpecificAgentViewHeader({
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+
+      <DropdownMenu modal={false}>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost">
+            <MoreVerticalIcon />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={onEdit}>
+            <PencilIcon className="text-black size-4" />
+            Edit
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={onRemove}>
+            <TrashIcon className="text-black size-4" />
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }
