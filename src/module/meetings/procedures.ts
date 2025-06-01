@@ -69,6 +69,7 @@ export const meetingsRouter = createTRPCRouter({
           )
         );
       const totalPages = Math.ceil(totalCount[0].count / input.pageSize);
+
       return {
         items: data,
         totalCount: totalCount[0].count,
