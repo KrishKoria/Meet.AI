@@ -13,7 +13,7 @@ import {
 interface CommandSelectProps {
   options: Array<{ id: string; value: string; children: React.ReactNode }>;
   onSelect: (value: string) => void;
-  onSearch: (value: string) => void;
+  onSearch?: (value: string) => void;
   value: string;
   placeholder?: string;
   isSearchable?: boolean;
