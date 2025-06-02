@@ -2,6 +2,8 @@
 
 import { authClient } from "@/lib/auth-client";
 import { LoaderIcon } from "lucide-react";
+import CallConnect from "./call-connect";
+import { generateAvatarUrl } from "@/lib/avatar";
 
 interface CallProviderProps {
   meetingId: string;
@@ -18,10 +20,16 @@ function CallProvider({ meetingId, meetingName }: CallProviderProps) {
     );
   }
   return (
-    <div>
-      {meetingId}
-      {meetingName}
-    </div>
+    <CallConnect
+      meetingId={meetingId}
+      meetingName={meetingName}
+      userId={data.user.id}
+      userName={data.user.name}
+      userImage={
+        data.user.image ??
+        generateAvatarUrl({ seed: data.user.name, variant: "initials" })
+      }
+    />
   );
 }
 
