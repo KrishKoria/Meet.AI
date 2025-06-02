@@ -4,10 +4,19 @@ import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { columns } from "../components/columns";
 import { EmptyState } from "@/components/empty-state";
+import useMeetingsFilters from "../hooks/use-meetings-filters";
+import { useDebounce } from "@/hooks/use-debounce";
 
 function MeetingsView() {
   const trpc = useTRPC();
-  const { data } = useSuspenseQuery(trpc.meetings.getMany.queryOptions({}));
+  const [filters, setFilters] = useMeetingsFilters();
+  const deferredSearch = useDebounce(filters.search, 300);
+  const { data } = useSuspenseQuery(
+    trpc.meetings.getMany.queryOptions({
+      ...filters,
+      search: deferredSearch,
+    })
+  );
   return (
     <div className="flex-1 pb-4 px-4 md:px-8 flex flex-col gap-y-4">
       <DataTable columns={columns} data={data.items} />

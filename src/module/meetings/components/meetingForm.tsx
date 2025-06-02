@@ -21,6 +21,7 @@ import { useState } from "react";
 import CommandSelect from "@/components/command-select";
 import { GenerateAvatar } from "@/components/generate-avatar";
 import NewAgentDialog from "@/module/agents/components/new-agent-dialog";
+import { useDebounce } from "@/hooks/use-debounce";
 
 interface MeetingFormProps {
   onSuccess?: (id?: string) => void;
@@ -33,10 +34,11 @@ function MeetingForm({ onSuccess, onCancel, initialValues }: MeetingFormProps) {
   const client = useQueryClient();
   const [openNewAgentDialog, setOpenNewAgentDialog] = useState(false);
   const [agentSearch, setAgentSearch] = useState("");
+  const debouncedAgentSearch = useDebounce(agentSearch, 300);
   const agents = useQuery(
     trpc.agents.getMany.queryOptions({
       pageSize: 100,
-      search: agentSearch,
+      search: debouncedAgentSearch,
     })
   );
 

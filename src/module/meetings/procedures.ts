@@ -11,6 +11,7 @@ import {
 } from "@/constants";
 import { TRPCError } from "@trpc/server";
 import { meetingsInsertSchema, meetingsUpdateSchema } from "./schemas";
+import { MeetingStatus } from "./types";
 
 export const meetingsRouter = createTRPCRouter({
   getOne: protectedProcedure
@@ -42,6 +43,16 @@ export const meetingsRouter = createTRPCRouter({
           .max(MAX_PAGE_SIZE)
           .default(DEFAULT_PAGE_SIZE),
         search: z.string().nullish(),
+        agentId: z.string().nullish(),
+        status: z
+          .enum([
+            MeetingStatus.Upcoming,
+            MeetingStatus.Processing,
+            MeetingStatus.Active,
+            MeetingStatus.Completed,
+            MeetingStatus.Cancelled,
+          ])
+          .nullish(),
       })
     )
     .query(async ({ input, ctx }) => {
@@ -58,7 +69,11 @@ export const meetingsRouter = createTRPCRouter({
         .where(
           and(
             eq(meetings.userId, ctx.auth.user.id),
-            input.search ? ilike(meetings.name, `%${input.search}%`) : undefined
+            input.search
+              ? ilike(meetings.name, `%${input.search}%`)
+              : undefined,
+            input.status ? eq(meetings.status, input.status) : undefined,
+            input.agentId ? eq(meetings.agentId, input.agentId) : undefined
           )
         )
         .orderBy(desc(meetings.createdAt), desc(meetings.id))
@@ -72,7 +87,11 @@ export const meetingsRouter = createTRPCRouter({
         .where(
           and(
             eq(meetings.userId, ctx.auth.user.id),
-            input.search ? ilike(meetings.name, `%${input.search}%`) : undefined
+            input.search
+              ? ilike(meetings.name, `%${input.search}%`)
+              : undefined,
+            input.status ? eq(meetings.status, input.status) : undefined,
+            input.agentId ? eq(meetings.agentId, input.agentId) : undefined
           )
         );
       const totalPages = Math.ceil(totalCount[0].count / input.pageSize);

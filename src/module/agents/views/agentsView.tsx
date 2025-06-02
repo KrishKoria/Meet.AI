@@ -8,13 +8,15 @@ import useAgentsFilters from "../hooks/use-agents-filters";
 import DataPagination from "../components/pagination";
 import { useRouter } from "next/navigation";
 import { DataTable } from "@/components/data-table";
+import { useDebounce } from "@/hooks/use-debounce";
 
 export default function AgentsView() {
   const [filters, setFilters] = useAgentsFilters();
   const router = useRouter();
   const trpc = useTRPC();
+  const deferredSearch = useDebounce(filters.search, 300);
   const { data } = useSuspenseQuery(
-    trpc.agents.getMany.queryOptions({ ...filters })
+    trpc.agents.getMany.queryOptions({ ...filters, search: deferredSearch })
   );
   return (
     <div className="flex-1 pb-4 px-4 md:px-8 flex flex-col gap-y-4">
