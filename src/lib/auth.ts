@@ -22,4 +22,5 @@ export const auth = betterAuth({
       ...schema,
     },
   }),
+  trustedOrigins: ["https://capable-gorgeous-maggot.ngrok-free.app"],
 });
