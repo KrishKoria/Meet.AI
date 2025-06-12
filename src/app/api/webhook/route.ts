@@ -1,3 +1,4 @@
+import { inngest } from "@/app/inngest/client";
 import { db } from "@/db";
 import { agents, meetings } from "@/db/schema";
 import { client } from "@/lib/stream-video";
@@ -170,6 +171,14 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     }
+
+    await inngest.send({
+      name: "meetings/processing",
+      data: {
+        meetingId: updatedMeeting.id,
+        transcript_url: updatedMeeting.transcript_url,
+      },
+    });
   } else if (eventType === "call.recording_ready") {
     const event = payload as CallRecordingReadyEvent;
     const meetingId = event.call_cid.split(":")[1];

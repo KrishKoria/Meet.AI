@@ -1,3 +1,4 @@
+import { text } from "drizzle-orm/pg-core";
 import { AppRouter } from "@/trpc/routers/_app";
 import { inferRouterOutputs } from "@trpc/server";
 
@@ -12,3 +13,11 @@ export enum MeetingStatus {
   Processing = "processing",
   Cancelled = "cancelled",
 }
+
+export type StreamTranscriptItem = {
+  speaker_id: string;
+  type: string;
+  text: string;
+  start_ts: number;
+  stop_ts: number;
+};
