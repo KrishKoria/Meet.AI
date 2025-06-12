@@ -14,6 +14,7 @@ import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { formatDuration } from "@/lib/utils";
 import Markdown from "react-markdown";
+import Transcript from "../transcript";
 interface CompletedStateProps {
   data: MeetingGetOne;
 }
@@ -66,7 +67,7 @@ function CompletedState({ data }: CompletedStateProps) {
             />
           </div>
         </TabsContent>
-        <TabsContent value="transcript">
+        <TabsContent value="summary">
           <div className="bg-white rounded-lg border">
             <div className="px-4 py-5 gap-y-5 flex flex-col col-span-5">
               <h2 className="text-2xl font-medium capitalize">{data.name}</h2>
@@ -145,6 +146,9 @@ function CompletedState({ data }: CompletedStateProps) {
               </div>
             </div>
           </div>
+        </TabsContent>
+        <TabsContent value="transcript">
+          <Transcript meetingId={data.id} />
         </TabsContent>
       </Tabs>
     </div>
