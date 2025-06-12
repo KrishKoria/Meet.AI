@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface AgentFormProps {
   onSuccess?: () => void;
@@ -26,16 +27,23 @@ interface AgentFormProps {
 }
 
 function AgentForm({ onSuccess, onCancel, initialValues }: AgentFormProps) {
+  const router = useRouter();
   const trpc = useTRPC();
   const client = useQueryClient();
   const createAgent = useMutation(
     trpc.agents.create.mutationOptions({
       onSuccess: async () => {
         await client.invalidateQueries(trpc.agents.getMany.queryOptions({}));
+        await client.invalidateQueries(
+          trpc.premium.getFreeUsage.queryOptions()
+        );
         onSuccess?.();
       },
       onError: (error) => {
         toast.error(error.message);
+        if (error.data?.code === "FORBIDDEN") {
+          router.push("/upgrade");
+        }
       },
     })
   );

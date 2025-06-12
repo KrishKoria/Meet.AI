@@ -31,7 +31,9 @@ function SpecificAgentView({ agentId }: SpecificAgentViewProps) {
     trpc.agents.remove.mutationOptions({
       onSuccess: async () => {
         await client.invalidateQueries(trpc.agents.getMany.queryOptions({}));
-        // client.invalidateQueries(trpc.meetings.getMany.queryOptions({}));
+        await client.invalidateQueries(
+          trpc.premium.getFreeUsage.queryOptions()
+        );
         router.push("/agents");
       },
       onError: (error) => {

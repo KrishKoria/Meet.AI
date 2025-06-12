@@ -33,6 +33,9 @@ function MeetingDetailsView({ meetingId }: MeetingDetailsProps) {
     trpc.meetings.remove.mutationOptions({
       onSuccess: async () => {
         await client.invalidateQueries(trpc.meetings.getMany.queryOptions({}));
+        await client.invalidateQueries(
+          trpc.premium.getFreeUsage.queryOptions()
+        );
         router.push("/meetings");
       },
       onError: (error) => {
