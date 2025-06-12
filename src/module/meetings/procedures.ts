@@ -25,6 +25,7 @@ import { meetingsInsertSchema, meetingsUpdateSchema } from "./schemas";
 import { MeetingStatus } from "./types";
 import { client } from "@/lib/stream-video";
 import { generateAvatarUrl } from "@/lib/avatar";
+import { streamChat } from "@/lib/stream-chat";
 
 export const meetingsRouter = createTRPCRouter({
   generateToken: protectedProcedure.mutation(async ({ ctx }) => {
@@ -47,6 +48,14 @@ export const meetingsRouter = createTRPCRouter({
       user_id: ctx.auth.user.id,
       exp: expiration,
       validity_in_seconds: issuedAt,
+    });
+    return token;
+  }),
+  generateChatToken: protectedProcedure.mutation(async ({ ctx }) => {
+    const token = streamChat.createToken(ctx.auth.user.id);
+    await streamChat.upsertUser({
+      id: ctx.auth.user.id,
+      role: "admin",
     });
     return token;
   }),

@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { formatDuration } from "@/lib/utils";
 import Markdown from "react-markdown";
 import Transcript from "../transcript";
+import ChatProvider from "../chat-provider";
 interface CompletedStateProps {
   data: MeetingGetOne;
 }
@@ -149,6 +150,9 @@ function CompletedState({ data }: CompletedStateProps) {
         </TabsContent>
         <TabsContent value="transcript">
           <Transcript meetingId={data.id} />
+        </TabsContent>
+        <TabsContent value="chat">
+          <ChatProvider meetingId={data.id} meetingName={data.name} />
         </TabsContent>
       </Tabs>
     </div>
