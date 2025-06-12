@@ -11,9 +11,8 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { MeetingGetMany } from "../types";
-import humanizeDuration from "humanize-duration";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
+import { cn, formatDuration } from "@/lib/utils";
 const statusIconMap = {
   upcoming: ClockArrowUpIcon,
   active: LoaderIcon,
@@ -28,14 +27,6 @@ const statusColorMap = {
   cancelled: "bg-rose-500/20 text-rose-800 border-rose-800/5",
   processing: "bg-gray-300/20 text-gray-800 border-gray-800/5",
 };
-
-function formatDuration(seconds: number): string {
-  return humanizeDuration(seconds * 1000, {
-    largest: 1,
-    round: true,
-    units: ["h", "m", "s"],
-  });
-}
 
 export const columns: ColumnDef<MeetingGetMany[number]>[] = [
   {
