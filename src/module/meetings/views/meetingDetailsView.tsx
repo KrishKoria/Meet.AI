@@ -77,13 +77,7 @@ function MeetingDetailsView({ meetingId }: MeetingDetailsProps) {
         {isCompleted && <CompletedState data={data} />}
         {isProcessing && <ProcessingState />}
         {isActive && <ActiveState meetingId={meetingId} />}
-        {isUpcoming && (
-          <UpcomingState
-            meetingId={meetingId}
-            onCancel={() => {}}
-            isCancelling={false}
-          />
-        )}
+        {isUpcoming && <UpcomingState meetingId={meetingId} />}
       </div>
     </>
   );
