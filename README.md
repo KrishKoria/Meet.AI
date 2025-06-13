@@ -77,7 +77,6 @@ Database: PostgreSQL + Drizzle ORM
 Authentication: Better Auth (Multi-provider)
 Background Jobs: Inngest (Event-driven)
 File Storage: Stream CDN
-WebSockets: Real-time updates
 ```
 
 ### **AI & Video Infrastructure**
@@ -97,8 +96,6 @@ Summaries: Custom AI Agents
 Hosting: Vercel (Zero-config deployment)
 Database: Neon PostgreSQL (Serverless)
 Billing: Polar (Subscription management)
-Monitoring: Built-in error tracking
-Analytics: Custom dashboard
 ```
 
 ---
