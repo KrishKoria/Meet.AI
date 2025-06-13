@@ -24,6 +24,7 @@ const aiClient = new OpenAI({
 function verifySignatureSDK(signature: string, body: string): boolean {
   return client.verifyWebhook(body, signature);
 }
+const processedMessageIds = new Set<string>();
 
 export async function POST(request: NextRequest) {
   const signature = request.headers.get("x-signature");
@@ -203,6 +204,10 @@ export async function POST(request: NextRequest) {
     const userId = event.user?.id;
     const channelId = event.channel_id;
     const text = event.message?.text;
+    const messageId = event.message?.id;
+    if (!messageId) {
+      return NextResponse.json({ error: "Missing messageId" }, { status: 400 });
+    }
     if (!userId || !channelId || !text) {
       return NextResponse.json(
         {
@@ -210,6 +215,13 @@ export async function POST(request: NextRequest) {
         },
         { status: 400 }
       );
+    }
+    if (processedMessageIds.has(messageId)) {
+      return NextResponse.json({ status: "duplicate" });
+    }
+    processedMessageIds.add(messageId);
+    if (processedMessageIds.size > 1000) {
+      processedMessageIds.clear();
     }
     const [existingMeeting] = await db
       .select()
