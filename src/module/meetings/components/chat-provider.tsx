@@ -20,7 +20,6 @@ function ChatProvider({ meetingId, meetingName }: ChatProviderProps) {
   return (
     <ChatUI
       meetingId={meetingId}
-      meetingName={meetingName}
       userId={data.user.id}
       userName={data.user.name}
       userImage={data.user.image ?? ""}

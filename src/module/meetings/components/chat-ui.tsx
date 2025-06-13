@@ -16,19 +16,12 @@ import {
 } from "stream-chat-react";
 interface ChatUIProps {
   meetingId: string;
-  meetingName: string;
   userId: string;
   userName: string;
   userImage: string | undefined;
 }
 
-function ChatUI({
-  meetingId,
-  meetingName,
-  userId,
-  userName,
-  userImage,
-}: ChatUIProps) {
+function ChatUI({ meetingId, userId, userName, userImage }: ChatUIProps) {
   const trpc = useTRPC();
   const { mutateAsync: generateChatToken } = useMutation(
     trpc.meetings.generateChatToken.mutationOptions()
