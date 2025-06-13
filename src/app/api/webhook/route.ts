@@ -1,6 +1,6 @@
 import { inngest } from "@/app/inngest/client";
 import { db } from "@/db";
-import { agents, meetings, user } from "@/db/schema";
+import { agents, meetings } from "@/db/schema";
 import { generateAvatarUrl } from "@/lib/avatar";
 import { streamChat } from "@/lib/stream-chat";
 import { client } from "@/lib/stream-video";
