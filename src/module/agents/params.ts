@@ -1,7 +1,7 @@
 import { DEFAULT_PAGE } from "@/constants";
 import { parseAsString, parseAsInteger, createLoader } from "nuqs/server";
 
-export const ServerFilters = {
+const ServerFilters = {
   search: parseAsString.withDefault("").withOptions({
     clearOnDefault: true,
   }),

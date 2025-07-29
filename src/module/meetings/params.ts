@@ -6,8 +6,7 @@ import {
   parseAsStringEnum,
 } from "nuqs/server";
 import { MeetingStatus } from "./types";
-
-export const ServerFilters = {
+const ServerFilters = {
   search: parseAsString.withDefault("").withOptions({
     clearOnDefault: true,
   }),
