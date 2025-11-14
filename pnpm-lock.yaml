@@ -58,7 +58,10 @@ importers:
         version: 1.2.7(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@stream-io/node-sdk':
         specifier: ^0.4.24
-        version: 0.4.24
+        version: 0.4.24(@stream-io/openai-realtime-api@0.3.3)
+      '@stream-io/openai-realtime-api':
+        specifier: ^0.3.3
+        version: 0.3.3
       '@stream-io/video-react-sdk':
         specifier: ^1.18.5
         version: 1.18.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
@@ -1090,6 +1093,10 @@ packages:
   '@nolyfill/is-core-module@1.0.39':
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
+
+  '@openai/realtime-api-beta@https://codeload.github.com/openai/openai-realtime-api-beta/tar.gz/a5cb94824f625423858ebacb9f769226ca98945f':
+    resolution: {tarball: https://codeload.github.com/openai/openai-realtime-api-beta/tar.gz/a5cb94824f625423858ebacb9f769226ca98945f}
+    version: 0.0.0
 
   '@opentelemetry/api-logs@0.57.2':
     resolution: {integrity: sha512-uIX52NnTM0iBh84MShlpouI7UKqkZ7MrUszTmaypHBu4r7NofznSnQRfJ+uUeDtQDj6w8eFGg5KBLDAwAPz1+A==}
@@ -2179,6 +2186,9 @@ packages:
     peerDependenciesMeta:
       '@stream-io/openai-realtime-api':
         optional: true
+
+  '@stream-io/openai-realtime-api@0.3.3':
+    resolution: {integrity: sha512-jHjvE8zIkUAK6oeR/ZmjKDkyGB/jmV0QSGEv8CmXbobX4uzWPjM72CK6kqzTdUqJdxjGun7UrCp2enrPhHizlg==}
 
   '@stream-io/transliterate@1.5.5':
     resolution: {integrity: sha512-r6Qp0HylAZhHNWHxU1nGfRI2Dtkbs1iqLCnOp1bvKhv8yj0/sEUigN0dk0LGPbE4I7zDO3tppyd7PaTPBvvJkg==}
@@ -6207,6 +6217,13 @@ snapshots:
 
   '@nolyfill/is-core-module@1.0.39': {}
 
+  '@openai/realtime-api-beta@https://codeload.github.com/openai/openai-realtime-api-beta/tar.gz/a5cb94824f625423858ebacb9f769226ca98945f':
+    dependencies:
+      ws: 8.18.2
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   '@opentelemetry/api-logs@0.57.2':
     dependencies:
       '@opentelemetry/api': 1.9.0
@@ -7467,12 +7484,22 @@ snapshots:
   '@stream-io/escape-string-regexp@5.0.1':
     optional: true
 
-  '@stream-io/node-sdk@0.4.24':
+  '@stream-io/node-sdk@0.4.24(@stream-io/openai-realtime-api@0.3.3)':
     dependencies:
       '@types/jsonwebtoken': 9.0.9
       '@types/node': 18.19.111
       jsonwebtoken: 9.0.2
       uuid: 9.0.1
+    optionalDependencies:
+      '@stream-io/openai-realtime-api': 0.3.3
+
+  '@stream-io/openai-realtime-api@0.3.3':
+    dependencies:
+      '@openai/realtime-api-beta': https://codeload.github.com/openai/openai-realtime-api-beta/tar.gz/a5cb94824f625423858ebacb9f769226ca98945f
+      ws: 8.18.2
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   '@stream-io/transliterate@1.5.5':
     dependencies:
