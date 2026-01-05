@@ -48,7 +48,7 @@ export default function SignInView() {
       {
         onSuccess: () => {
           setPending(false);
-          router.push("/");
+          router.push("/meetings");
         },
         onError: (error) => {
           setPending(false);

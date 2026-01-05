@@ -7,6 +7,6 @@ export default async function SignIn() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  if (!!session) redirect("/");
+  if (!!session) redirect("/meetings");
   return <SignInView />;
 }
