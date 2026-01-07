@@ -180,6 +180,7 @@ export default function SignUpView() {
                     onClick={() =>
                       authClient.signIn.social({
                         provider: "google",
+                        callbackURL: "/meetings",
                       })
                     }
                   >
@@ -192,6 +193,7 @@ export default function SignUpView() {
                     onClick={() =>
                       authClient.signIn.social({
                         provider: "github",
+                        callbackURL: "/meetings",
                       })
                     }
                   >

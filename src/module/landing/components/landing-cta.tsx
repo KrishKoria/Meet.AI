@@ -1,8 +1,18 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
-import { ArrowRightIcon, SparklesIcon } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import {
+  ArrowRightIcon,
+  LayoutDashboardIcon,
+  SparklesIcon,
+} from "lucide-react";
 import Link from "next/link";
 
 export function LandingCTA() {
+  const { data: session } = authClient.useSession();
+  const isAuthenticated = !!session?.user;
+
   return (
     <section className="py-24 md:py-32 relative overflow-hidden">
       {/* Background */}
@@ -19,7 +29,9 @@ export function LandingCTA() {
         <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-8">
           <SparklesIcon className="size-4 text-primary" />
           <span className="text-sm text-white/80">
-            Start your 14-day free trial today
+            {isAuthenticated
+              ? "Welcome back! Continue where you left off"
+              : "Start your 14-day free trial today"}
           </span>
         </div>
 
@@ -34,29 +46,47 @@ export function LandingCTA() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button
-            size="lg"
-            className="h-12 px-8 text-base bg-primary hover:bg-primary/90"
-            asChild
-          >
-            <Link href="/sign-up">
-              Get Started Free
-              <ArrowRightIcon className="size-4 ml-1" />
-            </Link>
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="h-12 px-8 text-base border-white/20 text-white hover:bg-white/10 hover:text-white"
-            asChild
-          >
-            <Link href="/contact">Talk to Sales</Link>
-          </Button>
+          {isAuthenticated ? (
+            <Button
+              size="lg"
+              className="h-12 px-8 text-base bg-primary hover:bg-primary/90"
+              asChild
+            >
+              <Link href="/meetings">
+                <LayoutDashboardIcon className="size-4" />
+                Go to Dashboard
+                <ArrowRightIcon className="size-4 ml-1" />
+              </Link>
+            </Button>
+          ) : (
+            <>
+              <Button
+                size="lg"
+                className="h-12 px-8 text-base bg-primary hover:bg-primary/90"
+                asChild
+              >
+                <Link href="/sign-up">
+                  Get Started Free
+                  <ArrowRightIcon className="size-4 ml-1" />
+                </Link>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-12 px-8 text-base border-white/20 text-white hover:bg-white/10 hover:text-white"
+                asChild
+              >
+                <Link href="/contact">Talk to Sales</Link>
+              </Button>
+            </>
+          )}
         </div>
 
-        <p className="mt-6 text-sm text-white/50">
-          No credit card required. Free plan available.
-        </p>
+        {!isAuthenticated && (
+          <p className="mt-6 text-sm text-white/50">
+            No credit card required. Free plan available.
+          </p>
+        )}
       </div>
     </section>
   );

@@ -1,8 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
-import { BotIcon, MenuIcon, XIcon } from "lucide-react";
+import {
+  ArrowRightIcon,
+  BotIcon,
+  LayoutDashboardIcon,
+  MenuIcon,
+  XIcon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -15,6 +22,9 @@ const navItems = [
 
 export function LandingNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { data: session, isPending } = authClient.useSession();
+
+  const isAuthenticated = !!session?.user;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
@@ -43,15 +53,29 @@ export function LandingNavbar() {
 
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-3">
-            <Button variant="ghost" asChild>
-              <Link href="/sign-in">Sign In</Link>
-            </Button>
-            <Button asChild>
-              <Link href="/sign-up">
-                <BotIcon className="size-4" />
-                Get Started Free
-              </Link>
-            </Button>
+            {isPending ? (
+              <div className="h-9 w-32 bg-muted animate-pulse rounded-md" />
+            ) : isAuthenticated ? (
+              <Button asChild>
+                <Link href="/meetings">
+                  <LayoutDashboardIcon className="size-4" />
+                  Dashboard
+                  <ArrowRightIcon className="size-4" />
+                </Link>
+              </Button>
+            ) : (
+              <>
+                <Button variant="ghost" asChild>
+                  <Link href="/sign-in">Sign In</Link>
+                </Button>
+                <Button asChild>
+                  <Link href="/sign-up">
+                    <BotIcon className="size-4" />
+                    Get Started Free
+                  </Link>
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -86,12 +110,26 @@ export function LandingNavbar() {
               </Link>
             ))}
             <div className="flex flex-col gap-2 mt-3 pt-3 border-t">
-              <Button variant="outline" className="w-full" asChild>
-                <Link href="/sign-in">Sign In</Link>
-              </Button>
-              <Button className="w-full" asChild>
-                <Link href="/sign-up">Get Started Free</Link>
-              </Button>
+              {isPending ? (
+                <div className="h-9 w-full bg-muted animate-pulse rounded-md" />
+              ) : isAuthenticated ? (
+                <Button className="w-full" asChild>
+                  <Link href="/meetings">
+                    <LayoutDashboardIcon className="size-4" />
+                    Dashboard
+                    <ArrowRightIcon className="size-4" />
+                  </Link>
+                </Button>
+              ) : (
+                <>
+                  <Button variant="outline" className="w-full" asChild>
+                    <Link href="/sign-in">Sign In</Link>
+                  </Button>
+                  <Button className="w-full" asChild>
+                    <Link href="/sign-up">Get Started Free</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>

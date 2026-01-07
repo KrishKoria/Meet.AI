@@ -2,7 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRightIcon, PlayIcon, SparklesIcon } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import {
+  ArrowRightIcon,
+  LayoutDashboardIcon,
+  PlayIcon,
+  SparklesIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -10,6 +16,9 @@ const rotatingWords = ["Intelligent", "Efficient", "Collaborative", "Powerful"];
 
 export function LandingHero() {
   const [currentWord, setCurrentWord] = useState(0);
+  const { data: session } = authClient.useSession();
+
+  const isAuthenticated = !!session?.user;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -85,12 +94,22 @@ export function LandingHero() {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-            <Button size="lg" className="h-12 px-8 text-base" asChild>
-              <Link href="/sign-up">
-                Start Free Trial
-                <ArrowRightIcon className="size-4 ml-1" />
-              </Link>
-            </Button>
+            {isAuthenticated ? (
+              <Button size="lg" className="h-12 px-8 text-base" asChild>
+                <Link href="/meetings">
+                  <LayoutDashboardIcon className="size-4" />
+                  Go to Dashboard
+                  <ArrowRightIcon className="size-4 ml-1" />
+                </Link>
+              </Button>
+            ) : (
+              <Button size="lg" className="h-12 px-8 text-base" asChild>
+                <Link href="/sign-up">
+                  Start Free Trial
+                  <ArrowRightIcon className="size-4 ml-1" />
+                </Link>
+              </Button>
+            )}
             <Button
               size="lg"
               variant="outline"
